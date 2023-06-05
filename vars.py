@@ -1,0 +1,9 @@
+all_states = ['type', 'min_price', 'max_price', 'country', 'year', 'marka', 'model']
+state_now = 0
+country = ""
+type = ""
+min_price = ""
+max_price = ""
+year = ""
+marka = ""
+model = ""
