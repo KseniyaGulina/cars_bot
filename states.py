@@ -10,4 +10,5 @@ class Category(StatesGroup):
     year = State()
     marka = State()
     model = State()
+    show = State()
     stop = State()
