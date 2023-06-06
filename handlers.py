@@ -25,12 +25,6 @@ async def help(message: Message, state=None):
     await message.answer(text.help)
 
 
-@dp.message_handler(Command('stop'))
-async def find(message: Message, state=FSMContext):
-    await message.answer(text.stop)
-    await state.finish()
-
-
 @dp.message_handler(Command('find'))
 async def find(message: Message, state=None):
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -40,12 +34,15 @@ async def find(message: Message, state=None):
     markup.add(btn1, btn2, btn3)
     await message.answer(text.ask_type, reply_markup=markup)
     await Category.type.set()
-    vars.state_now += 1
 
 
 @dp.message_handler(state=Category.type)
-async def ask_type(message: Message, state=FSMContext):
-    async with state.proxy() as data:
+async def ask_type(message: Message, state: FSMContext):
+    if message.text != "/next":
+        await state.update_data(type=message.text)
+    else:
+        await state.update_data(type="")
+    if message.text != "/next":
         vars.type = message.text
     # ПРОВЕРИТЬ ТИП ДАННЫХ
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -55,12 +52,15 @@ async def ask_type(message: Message, state=FSMContext):
     markup.add(btn1, btn2, btn3)
     await message.answer(text.ask_min_price, reply_markup=markup)
     await Category.next()
-    # vars.state_now += 1
 
 
 @dp.message_handler(state=Category.min_price)
-async def ask_min_price(message: Message, state=FSMContext):
-    async with state.proxy() as data:
+async def ask_min_price(message: Message, state: FSMContext):
+    if message.text != "/next":
+        await state.update_data(min_price=int(message.text))
+    else:
+        await state.update_data(min_price="")
+    if message.text != "/next":
         vars.min_price = message.text
     # ПРОВЕРИТЬ ТИП ДАННЫХ
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -70,13 +70,15 @@ async def ask_min_price(message: Message, state=FSMContext):
     markup.add(btn1, btn2, btn3)
     await message.answer(text.ask_max_price, reply_markup=markup)
     await Category.next()
-    # await Category.min_price.set()
-    # vars.state_now += 1
 
 
 @dp.message_handler(state=Category.max_price)
-async def ask_max_price(message: Message, state=FSMContext):
-    async with state.proxy() as data:
+async def ask_max_price(message: Message, state: FSMContext):
+    if message.text != "/next":
+        await state.update_data(max_price=int(message.text))
+    else:
+        await state.update_data(max_price="")
+    if message.text != "/next":
         vars.max_price = message.text
     # ПРОВЕРИТЬ ТИП ДАННЫХ
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -85,14 +87,16 @@ async def ask_max_price(message: Message, state=FSMContext):
     btn3 = KeyboardButton("/show")
     markup.add(btn1, btn2, btn3)
     await message.answer(text.ask_country, reply_markup=markup)
-    # await Category.min_price.set()
-    # vars.state_now += 1
     await Category.next()
 
 
 @dp.message_handler(state=Category.country)
-async def ask_country(message: Message, state=FSMContext):
-    async with state.proxy() as data:
+async def ask_country(message: Message, state: FSMContext):
+    if message.text != "/next":
+        await state.update_data(country=message.text)
+    else:
+        await state.update_data(country="")
+    if message.text != "/next":
         vars.country = message.text
     # ПРОВЕРИТЬ ТИП ДАННЫХ
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -101,14 +105,16 @@ async def ask_country(message: Message, state=FSMContext):
     btn3 = KeyboardButton("/show")
     markup.add(btn1, btn2, btn3)
     await message.answer(text.ask_year, reply_markup=markup)
-    # await Category.min_price.set()
-    # vars.state_now += 1
     await Category.next()
 
 
 @dp.message_handler(state=Category.year)
-async def ask_year(message: Message, state=FSMContext):
-    async with state.proxy() as data:
+async def ask_year(message: Message, state: FSMContext):
+    if message.text != "/next":
+        await state.update_data(year=int(message.text))
+    else:
+        await state.update_data(year="")
+    if message.text != "/next":
         vars.year = message.text
     # ПРОВЕРИТЬ ТИП ДАННЫХ
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -117,14 +123,16 @@ async def ask_year(message: Message, state=FSMContext):
     btn3 = KeyboardButton("/show")
     markup.add(btn1, btn2, btn3)
     await message.answer(text.ask_marka, reply_markup=markup)
-    # await Category.min_price.set()
-    # vars.state_now += 1
     await Category.next()
 
 
 @dp.message_handler(state=Category.marka)
-async def ask_marka(message: Message, state=FSMContext):
-    async with state.proxy() as data:
+async def ask_marka(message: Message, state: FSMContext):
+    if message.text != "/next":
+        await state.update_data(marka=message.text)
+    else:
+        await state.update_data(marka="")
+    if message.text != "/next":
         vars.marka = message.text
     # ПРОВЕРИТЬ ТИП ДАННЫХ
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -133,14 +141,16 @@ async def ask_marka(message: Message, state=FSMContext):
     btn3 = KeyboardButton("/show")
     markup.add(btn1, btn2, btn3)
     await message.answer(text.ask_model, reply_markup=markup)
-    # await Category.min_price.set()
-    # vars.state_now += 1
     await Category.next()
 
 
 @dp.message_handler(state=Category.model)
-async def ask_model(message: Message, state=FSMContext):
-    async with state.proxy() as data:
+async def ask_model(message: Message, state: FSMContext):
+    if message.text != "/next":
+        await state.update_data(model=message.text)
+    else:
+        await state.update_data(model="")
+    if message.text != "/next":
         vars.model = message.text
     # ПРОВЕРИТЬ ТИП ДАННЫХ
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -149,83 +159,23 @@ async def ask_model(message: Message, state=FSMContext):
     btn3 = KeyboardButton("/show")
     markup.add(btn1, btn2, btn3)
     await message.answer(text.show)
-    # await Category.min_price.set()
-    # vars.state_now += 1
     await Category.next()
-    vars.data = await sql.find(vars.marka)
-    await show(message)
+    await show(message, state)
 
 
 @dp.message_handler(state=Category.show)
-async def show(message: Message, state=FSMContext):
-    # mark = message.text.split()[-1]
-    info = await sql.find(vars.marka)
+async def show(message: Message, state: FSMContext):
+    get_c = await state.get_data()
+    category = [get_c['country'], get_c['type'], get_c['min_price'],
+                get_c['max_price'], get_c['year'], get_c['marka'], get_c['model'], ]
+    print(category)
+    info = await sql.find(category)
     for data in info:
         photo = InputFile("pictures/" + str(data[0]) + ".jpg")
-        caption = f"Марка = {data[1]} \n" \
-                  f"Год выпуска = {data[4]} \n" \
-                  f"Цена = {data[3]}"
-        await message.answer_photo(photo=photo, caption=caption)
-
-
-@dp.message_handler(Command('stop'))
-async def stop(message: Message, state=FSMContext):
-    vars.state_now = 0
-    vars.country = ""
-    vars.type = ""
-    vars.min_price = ""
-    vars.max_price = ""
-    vars.year = ""
-    vars.marka = ""
-    vars.model = ""
-    await state.finish()
-    # await Category.stop.set()
-
-
-@dp.message_handler(state=Category.show)
-async def show_a(message: Message, state=FSMContext):
-    # mark = message.text.split()[-1]
-    info = await sql.find(vars.marka)
-    data = info[0]
-    # data = info
-    # del info[0]
-    # photo = InputFile("pictures/" + data[2])
-    photo = InputFile("pictures/" + str(data[0]) + ".jpg")
-    caption = f"Марка = {data[1]} \n" \
-              f"Год выпуска = {data[4]} \n" \
-              f"Цена = {data[3]}"
-    await message.answer_photo(photo=photo, caption=caption)
-
-    @dp.message_handler(lambda message: message.text == "Дальше")
-    async def without_puree(message: Message):
-        data = info[0]
-        del info[0]
-        photo = InputFile("pictures/" + data[2])
-        caption = f"Марка = {data[1]} \n" \
-                  f"Год выпуска = {data[4]} \n" \
-                  f"Цена = {data[3]}"
-        await message.answer_photo(photo=photo, caption=caption)
-
-
-@dp.message_handler(Command('show'))
-async def show_a(message: Message, state=FSMContext):
-    mark = message.text.split()[-1]
-    info = await sql.find(mark)
-    data = info[0]
-    del info[0]
-    # photo = InputFile("pictures/" + data[2])
-    photo = InputFile("pictures/" + data[0] + ".jpg")
-    caption = f"Марка = {data[1]} \n" \
-              f"Год выпуска = {data[4]} \n" \
-              f"Цена = {data[3]}"
-    await message.answer_photo(photo=photo, caption=caption)
-
-    @dp.message_handler(lambda message: message.text == "Дальше")
-    async def without_puree(message: Message):
-        data = info[0]
-        del info[0]
-        photo = InputFile("pictures/" + data[2])
-        caption = f"Марка = {data[1]} \n" \
-                  f"Год выпуска = {data[4]} \n" \
-                  f"Цена = {data[3]}"
+        caption = f"Марка: {data[1]} \n" \
+                  f"Модель: {data[2]} \n" \
+                  f"Класс: {data[3]} \n" \
+                  f"Год выпуска: {data[4]} \n" \
+                  f"Цена: {data[5]} \n" \
+                  f"Страна производителя: {data[6]}"
         await message.answer_photo(photo=photo, caption=caption)
