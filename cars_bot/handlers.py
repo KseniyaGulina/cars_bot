@@ -1,10 +1,10 @@
 from aiogram.types import Message, InputFile, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher import FSMContext
-from main import dp
-import text
-import sql
-from states import Category
+from cars_bot.main import dp
+import cars_bot.text as text
+import cars_bot.sql as sql
+from cars_bot.states import Category
 
 
 @dp.message_handler(Command('start'))
