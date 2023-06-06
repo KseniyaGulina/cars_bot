@@ -1,9 +1,0 @@
-state_now = 0
-country = ""
-type = ""
-min_price = ""
-max_price = ""
-year = ""
-marka = ""
-model = ""
-data = []
