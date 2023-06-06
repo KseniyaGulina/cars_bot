@@ -1,6 +1,5 @@
 include README.md
 include LICENSE
 include requirements.txt
-include *.db
-include *.py
-include pictures/*
+include cars_bot-master/*.db
+include cars_bot-master/pictures/*

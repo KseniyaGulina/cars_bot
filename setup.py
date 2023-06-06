@@ -1,10 +1,12 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name="cars_bot",
     version="1.0.0",
     author="KseniyaGulina",
-    packages=find_packages(),
+
+    packages=['cars_bot'],
+
     install_requires=[
     'aiogram==2.25.1',
     'aiohttp==3.8.4',
